@@ -1,15 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="px-2">
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+  },
+  data() {
+    return {
+      searchTerm: '',
+      items: [
+        { id: 1, name: 'Apple' },
+        { id: 2, name: 'Banana' },
+        { id: 3, name: 'Cherry' },
+        { id: 4, name: 'Date' },
+        { id: 5, name: 'Elderberry' }
+      ]
+    };
+  },
+  methods: {
+    ...mapActions(['fetchStations'])
+  },
+  mounted(){
+   
+    this.fetchStations()
   }
 }
 </script>
@@ -21,6 +41,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
 }
 </style>
