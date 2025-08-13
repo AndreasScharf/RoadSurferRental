@@ -21,11 +21,10 @@ export function makeStore() {
   // mock API payload shape matches what your template renders
   export function makeSuccessDefaultPayload() {
     return {
-      id: 2,
-      stationId: 2,
+      id: '2',
       customerName: 'John Doe' ,
-      pickupReturnStationId: 2,
-      startDate: '2025-08-10T14:32:00Z',
-      endDate: '2025-08-15T22:46:00Z',
+      pickupReturnStationId: '2',
+      startDate: '2025-08-10T14:32:00.029Z',
+      endDate: '2025-08-15T22:46:00.028Z',
     }
   }

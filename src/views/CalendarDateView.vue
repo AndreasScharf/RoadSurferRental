@@ -3,23 +3,23 @@
         <p v-if="!pickupStationId">Please select a pickup station</p>
         <div v-else>
           
-            <ul class="p-0 flex-grow-1 overflow-scroll">
-                <draggable
-                    v-model="bookings" item-key="id"
-                    :item="booking"
-                    @dragstart="onDrag(booking)" >
-                    <template #item="{booking}">
-                        <li
-                            @click="$router.push({ name: 'BookingDetails', params: { date:this.date, pickupStationId:this.pickupStationId, bookingId: booking.id } })"
+            <ul class="p-0 flex-grow-1" >
 
-                            class="d-flex flex-column p-3 rounded-3 border bg-white shadow-sm mb-3 text-reset position-relative hover-shadow"
-                            >
-                            <span>{{ booking.customerName }} </span>
-                            <span class="text-muted">{{ booking.startDateFormat }} - {{ booking.endDateFormat }}</span>
-                            
-                        </li>
-                    </template>
-                </draggable>
+                <li v-for="booking in bookings" :key="booking.id"
+                    v-touch:swipe.left="() => onSwipeLeft(booking)" v-touch:swipe.right="() => onSwipeRight(booking)"
+                    @click="$router.push({ name: 'BookingDetails', params: { date:this.date, pickupStationId:this.pickupStationId, bookingId: booking.id } })"
+
+                    draggable="true" @dragstart="dragStartHandler(booking)"
+
+                    class="d-flex flex-row p-3 rounded-3 border bg-white shadow-sm mb-3 text-reset position-relative hover-shadow"
+                    >
+                    <div class="drag-text-container">
+                        <span>{{ booking.customerName }} </span>
+                        <span class="text-muted">{{ booking.startDateFormat }} - {{ booking.endDateFormat }}</span>
+                    </div>
+                    
+                    
+                </li>
             </ul>
         </div>
 
@@ -29,13 +29,28 @@
 import moment from 'moment';
 import { mapGetters } from 'vuex';
 
+
 export default {
     name: 'CalendarDateView',
+    components: { },
     props: { date: String, pickupStationId: String },
     methods: {
-        onDrag(booking) {
-            // Handle the drop event, e.g., update booking or show details
-            console.log('Dropped booking:', booking);
+       
+        getBookingPayload (index) {
+            return this.bookings[index]
+            
+        },
+        onSwipeLeft(booking) {
+            this.$store.commit('setBookingDate', {today: this.date, date: moment.utc(this.date).add(-1, 'day'), stationId:this.pickupStationId, bookingId: booking.id});
+        },
+        onSwipeRight(booking) {
+            this.$store.commit('setBookingDate', {today: this.date, date: moment.utc(this.date).add(1, 'day'), stationId:this.pickupStationId, bookingId: booking.id});
+
+        },
+
+        dragStartHandler(booking) {
+            this.$store.commit('dropstore/startDrag', booking);
+          
         }
     },
     computed: {
@@ -52,3 +67,18 @@ export default {
     },
 }
 </script>
+
+<style>
+.drag-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+    text-overflow: clip;
+    width: 100%;
+    transition: width 0.3s ease;
+}
+
+
+</style>

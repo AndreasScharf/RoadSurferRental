@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils'
 import BookingDetailsView from '../src/views/BookingDetailsView.vue'
-import { makeRouter, makeStore, makeSuccessDefaultPayload } from './helperFunctions'
-import { nextTick } from 'vue'
+import { makeRouter, makeStore, makeSuccessDefaultPayload } from './helperFunctionsBookingDetails'
 
 const flushPromises = () => new Promise((r) => setTimeout(r, 0))
 
@@ -17,10 +16,10 @@ describe('BookingDetailsView.vue', () => {
   });
 
   it('renders with real router', async () => {
-    const router = makeRouter()        // <-- must define routes
-    const store  = makeStore()         // <-- must provide needed getters
+    const router = makeRouter()        
+    const store  = makeStore()         
   
-    // ✅ push a concrete start location WITH the param
+    // push a concrete start location WITH the param
     router.push('/booking-details/2020-06-20/2/2')
     await router.isReady()
   
@@ -35,14 +34,13 @@ describe('BookingDetailsView.vue', () => {
     await flushPromises()
   
     expect(global.fetch).toHaveBeenCalledTimes(1)
-    //expect(wrapper.find('[data-test="booking-id"]').text()).toBe('123')
   });
 
   it('shows loading then renders fetched booking details', async () => {
-    const router = makeRouter()        // <-- must define routes
-    const store  = makeStore()         // <-- must provide needed getters
+    const router = makeRouter()       
+    const store  = makeStore()         
   
-    // ✅ push a concrete start location WITH the param
+    // push a concrete start location WITH the param
     router.push('/booking-details/2020-06-20/2/2')
     await router.isReady()
   

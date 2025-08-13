@@ -9,9 +9,14 @@ export default{
         isDropping(state) {
             return state.dropElement? true : false;
         },
+        getDragElement(state){
+
+            return state.dropElement
+        }
     },
     mutations: {
-        startDrop(state, element) {
+        startDrag(state, element) {
+            
             state.dropElement = element;
         },
         stopDrop(state) {

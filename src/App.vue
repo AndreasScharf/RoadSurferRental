@@ -14,21 +14,15 @@ export default {
   },
   data() {
     return {
-      searchTerm: '',
-      items: [
-        { id: 1, name: 'Apple' },
-        { id: 2, name: 'Banana' },
-        { id: 3, name: 'Cherry' },
-        { id: 4, name: 'Date' },
-        { id: 5, name: 'Elderberry' }
-      ]
+      
     };
   },
   methods: {
     ...mapActions(['fetchStations'])
   },
   mounted(){
-   
+    
+    // make data call should in real application happen constantly 
     this.fetchStations()
   }
 }

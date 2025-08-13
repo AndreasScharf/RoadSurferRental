@@ -30,28 +30,36 @@ export default {
         
     },
     methods: {
-        handleQuery(query) {
-            console.log('Query:', query);
-            // Handle the query logic here, e.g., filter locations based on the query
+        handleQuery() {
+            // could performe an API call to filter stations based on input, but here we just use the full list
         },
         pickupStationSelected(station) {
             this.$router.push({ name: 'CalendarDateView', params: { date: this.date, pickupStationId: station.id } });
         }
     },
     computed:{
-        ...mapGetters(['getStations'])
+        ...mapGetters(['getStations', 'getStationById']),
+
+        pickupStationName() {
+            const station = this.getStationById(parseInt(this.$route.params.pickupStationId));
+            return station ? station.name : '';
+        }
+        
     },
     watch:{
-
+        pickupStationName(){
+            if(this.pickupStation === '' && this.pickupStationName){
+                this.pickupStation = this.pickupStationName;
+            }
+        }
     },
     data() {
         const date = (this.$route.params.date) ? this.$route.params.date : moment().format('YYYY-MM-DD');
 
+
         return {
             // Define any data properties needed for the calendar view
             date, // Default to today's date
-
-
             pickupStation: '',
            
         };
@@ -62,7 +70,10 @@ export default {
         if (!this.$route.params.date) {
             this.$router.push({ name: 'CalendarDateView', params: { date: this.date } });
         }
-       
+
+        this.pickupStation = this.pickupStationName;
+
+      
     }
 
  

@@ -85,6 +85,7 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
+import { sanitizeBookingDetails } from '../utils/sanitizeData.js';
 
 export default {
     name: "BookingDetailsView",
@@ -131,8 +132,15 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     
-                    this.booking = data;
+                    this.booking = sanitizeBookingDetails(data);
+                    if (!this.booking) {
+                        console.error('Invalid booking data:', data);
+                        this.loadingBooking = false;
+                        this.$router.go(-1)// Redirect to previous page if booking data is invalid
+                        return;
+                    }
 
+                    
                     this.startDate = moment.utc(data.startDate).format('YYYY-MM-DD HH:mm');
                     this.endDate = moment.utc(data.endDate).format('YYYY-MM-DD HH:mm');
 
