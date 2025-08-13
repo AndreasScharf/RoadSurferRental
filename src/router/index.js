@@ -3,7 +3,6 @@ import CalendarView from '@/views/CalendarView.vue';
 import CalendarDateView from '@/views/CalendarDateView.vue'
 //import ChildView from '@/views/ChildView.vue';
 
-// Import your components
 
 const routes = [
     {
@@ -29,7 +28,8 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history:  process.env.NODE_ENV === 'production'? createWebHistory('/RoadSurferRental/') : createWebHistory(),
+    //history: createWebHistory(import.meta.env.BASE_URL),
     routes,
 });
 
